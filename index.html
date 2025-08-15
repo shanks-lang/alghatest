@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Feather Icons for UI icons -->
     <script src="https://unpkg.com/feather-icons"></script>
@@ -16,100 +16,111 @@
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
         }
+
+        /* New Background: A clean, geometric pattern with a clear gradient */
+        .main-background {
+            background-color: #f1f5f9; /* Fallback color */
+            background-image: 
+                linear-gradient(to bottom, #f8fafc, #eef2f7),
+                /* A subtle plus-sign pattern using SVG */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23dbeafe' fill-opacity='0.6'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Keyframe animation for cards appearing */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animated-card {
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Card hover effect */
         .card {
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        /* Custom styling for the details/summary dropdown to match the card theme */
-        details summary::-webkit-details-marker {
-            display: none;
-        }
-        .dropdown-card summary {
-            list-style: none;
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-
+<body class="min-h-screen flex items-center justify-center p-4 lg:p-8 main-background">
+    
     <!-- Main container -->
-    <div class="w-full max-w-4xl mx-auto">
+    <div class="w-full max-w-6xl mx-auto">
         
         <!-- Header -->
-        <header class="mb-10 text-center">
+        <header class="mb-12 text-center animated-card" style="animation-delay: 0s;">
             <img 
                 src="https://www.questionpro.com/qp_userimages/sub-3/4349734/Xcite-Logo_English-Blue.jpg" 
                 alt="Xcite Logo" 
                 class="mx-auto h-16 md:h-20 w-auto mb-4"
                 onerror="this.onerror=null; this.src='https://placehold.co/250x80/003366/FFFFFF?text=Xcite';"
             >
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Business Intelligence Portal</h1>
-            <p class="text-gray-500 mt-1">Select a dashboard to view insights.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Business Intelligence Portal</h1>
+            <p class="text-slate-500 mt-2">Select a dashboard to view insights.</p>
         </header>
 
         <!-- Navigation Menu Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <!-- Card 1: Overall NPS -->
-            <a href="https://bi.questionpro.com/dashboards/10704?tab=2" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
-                <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
-                    <i data-feather="bar-chart-2" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Overall NPS</h2>
-                    <p class="text-gray-600">View the main Net Promoter Score.</p>
-                </div>
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.1s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="bar-chart-2" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Overall NPS</h2></div>
             </a>
 
-            <!-- Card 2: Service Centre (Dropdown) -->
-            <div class="dropdown-card card bg-white rounded-xl shadow-md">
-                <details>
-                    <summary class="p-6 cursor-pointer flex items-center space-x-5">
-                        <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
-                             <i data-feather="tool" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-lg font-semibold text-gray-900">Service Centre</h2>
-                            <p class="text-gray-600">NPS, Insights, and Analysis.</p>
-                        </div>
-                        <div class="ml-auto">
-                            <i data-feather="chevron-down" class="w-5 h-5 text-gray-400"></i>
-                        </div>
-                    </summary>
-                    <div class="border-t border-gray-200 p-4 space-y-2 bg-gray-50 rounded-b-xl">
-                        <a href="https://bi.questionpro.com/dashboards/10704?tab=3" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Service Centre NPS</a>
-                        <a href="https://bi.questionpro.com/dashboards/10704?tab=4" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Service Centre Insights</a>
-                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Brand Analysis</a>
-                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">MC1 Analysis</a>
-                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">MC2 Analysis</a>
-                    </div>
-                </details>
-            </div>
+            <!-- Card 2: Service Centre NPS -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.2s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="activity" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Service Centre NPS</h2></div>
+            </a>
+
+            <!-- Card 3: Service Centre Insights -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.3s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="pie-chart" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Service Centre Insights</h2></div>
+            </a>
+
+            <!-- Card 4: Brand Analysis -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.4s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="tag" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Brand Analysis</h2></div>
+            </a>
             
-            <!-- Card 3: Cancelled Job Insights -->
-            <a href="#" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
-                 <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
-                    <i data-feather="x-circle" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Cancelled Job Insights</h2>
-                    <p class="text-gray-600">Analysis of cancelled jobs.</p>
-                </div>
+            <!-- Card 5: MC1 Analysis -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.5s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="file-text" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">MC1 Analysis</h2></div>
             </a>
 
-            <!-- Card 4: Replacements Insights -->
-            <a href="#" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
-                 <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
-                    <i data-feather="refresh-cw" class="w-6 h-6"></i>
-                </div>
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-900">Replacements Insights</h2>
-                    <p class="text-gray-600">Data on product replacements.</p>
-                </div>
+            <!-- Card 6: MC2 Analysis -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.6s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="file-text" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">MC2 Analysis</h2></div>
+            </a>
+
+            <!-- Card 7: Cancelled Job Insights -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.7s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="x-circle" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Cancelled Job Insights</h2></div>
+            </a>
+
+            <!-- Card 8: Replacement Jobs -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.8s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="refresh-cw" class="w-6 h-6"></i></div>
+                <div><h2 class="font-semibold text-slate-900">Replacement Jobs</h2></div>
             </a>
         </div>
 
