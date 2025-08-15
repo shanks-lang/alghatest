@@ -1,87 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Alghanim Engineering Survey</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .logo {
-      margin-bottom: 30px;
-    }
-
-    .logo img {
-      width: 180px;
-      height: auto;
-    }
-
-    h1 {
-      color: #0d4c92;
-      font-size: 26px;
-      margin-bottom: 12px;
-    }
-
-    p {
-      color: #333;
-      font-size: 18px;
-      margin: 0 20px 30px;
-      max-width: 600px;
-    }
-
-    button {
-      padding: 14px 28px;
-      font-size: 18px;
-      background-color: #0d4c92;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #08396e;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 14px;
-      color: #999;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xcite BI Dashboard Menu</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Feather Icons for UI icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+        }
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        /* Custom styling for the details/summary dropdown to match the card theme */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        .dropdown-card summary {
+            list-style: none;
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-  <div class="logo">
-    <img src="logo.png" alt="Alghanim Engineering Logo">
-  </div>
+    <!-- Main container -->
+    <div class="w-full max-w-4xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <img 
+                src="https://www.questionpro.com/qp_userimages/sub-3/4349734/Xcite-Logo_English-Blue.jpg" 
+                alt="Xcite Logo" 
+                class="mx-auto h-16 md:h-20 w-auto mb-4"
+                onerror="this.onerror=null; this.src='https://placehold.co/250x80/003366/FFFFFF?text=Xcite';"
+            >
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Business Intelligence Portal</h1>
+            <p class="text-gray-500 mt-1">Select a dashboard to view insights.</p>
+        </header>
 
-  <h1>Welcome to Alghanim Engineering Feedback</h1>
-  <p>Click the button below to begin the survey for your project phase.<br>
-     Once submitted, you’ll return to this screen automatically.</p>
+        <!-- Navigation Menu Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <button onclick="window.location.href='https://sanketr.questionpro.com/t/mL2MZL2M'">
-    Start Survey
-  </button>
+            <!-- Card 1: Overall NPS -->
+            <a href="https://bi.questionpro.com/dashboards/10704?tab=2" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
+                <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
+                    <i data-feather="bar-chart-2" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Overall NPS</h2>
+                    <p class="text-gray-600">View the main Net Promoter Score.</p>
+                </div>
+            </a>
 
-  <footer>
-    &copy; 2025 Alghanim Engineering
-  </footer>
+            <!-- Card 2: Service Centre (Dropdown) -->
+            <div class="dropdown-card card bg-white rounded-xl shadow-md">
+                <details>
+                    <summary class="p-6 cursor-pointer flex items-center space-x-5">
+                        <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
+                             <i data-feather="tool" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-900">Service Centre</h2>
+                            <p class="text-gray-600">NPS, Insights, and Analysis.</p>
+                        </div>
+                        <div class="ml-auto">
+                            <i data-feather="chevron-down" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                    </summary>
+                    <div class="border-t border-gray-200 p-4 space-y-2 bg-gray-50 rounded-b-xl">
+                        <a href="https://bi.questionpro.com/dashboards/10704?tab=3" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Service Centre NPS</a>
+                        <a href="https://bi.questionpro.com/dashboards/10704?tab=4" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Service Centre Insights</a>
+                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">Brand Analysis</a>
+                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">MC1 Analysis</a>
+                        <a href="#" target="_blank" class="block text-gray-700 hover:text-blue-600 hover:bg-blue-100 p-3 rounded-md transition-colors">MC2 Analysis</a>
+                    </div>
+                </details>
+            </div>
+            
+            <!-- Card 3: Cancelled Job Insights -->
+            <a href="#" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
+                 <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
+                    <i data-feather="x-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Cancelled Job Insights</h2>
+                    <p class="text-gray-600">Analysis of cancelled jobs.</p>
+                </div>
+            </a>
 
+            <!-- Card 4: Replacements Insights -->
+            <a href="#" target="_blank" class="card bg-white p-6 rounded-xl shadow-md flex items-center space-x-5">
+                 <div class="flex-shrink-0 bg-blue-500 text-white rounded-full p-3">
+                    <i data-feather="refresh-cw" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Replacements Insights</h2>
+                    <p class="text-gray-600">Data on product replacements.</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+    </script>
 </body>
 </html>
