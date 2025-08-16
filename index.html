@@ -16,10 +16,10 @@
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevent scrollbars from canvas */
+            overflow-x: hidden; /* Prevent horizontal scroll, allow vertical */
         }
 
-        /* Interactive Particle Background - Lighter Theme */
+        /* Interactive Particle Background - Light Theme */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -27,9 +27,9 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background-color: #0f172a; /* Lighter: slate-900 */
-            background-image: radial-gradient(circle at top left, rgba(59, 130, 246, 0.15), transparent 35%),
-                              radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.2), transparent 45%);
+            background-color: #f8fafc; /* slate-50 */
+            background-image: radial-gradient(circle at top left, rgba(59, 130, 246, 0.05), transparent 30%),
+                              radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.05), transparent 40%);
         }
 
         /* Keyframe animation for content appearing */
@@ -43,10 +43,10 @@
             animation: fadeIn 0.8s ease-out forwards;
         }
 
-        /* Card styles with 3D tilt effect - Lighter Theme */
+        /* Card styles with 3D tilt effect - Light Theme */
         .card {
-            background-color: rgba(30, 41, 59, 0.6); /* Lighter: slate-800 */
-            border: 1px solid #334155; /* Lighter: slate-700 */
+            background-color: rgba(255, 255, 255, 0.6); 
+            border: 1px solid #e2e8f0; /* slate-200 */
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -54,113 +54,120 @@
             will-change: transform;
         }
         .card:hover {
-            border-color: rgba(96, 165, 250, 0.5); /* Lighter: blue-400 */
-            box-shadow: 0 0 30px rgba(96, 165, 250, 0.15);
+            border-color: rgba(59, 130, 246, 0.4); /* blue-500 */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
         
         /* Sub-link styles */
         .sub-link {
-            background-color: rgba(51, 65, 85, 0.6); /* Lighter: slate-700 */
+            background-color: rgba(241, 245, 249, 0.7); /* slate-100 */
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            opacity: 0; /* Start hidden for animation */
+            animation: fadeIn 0.5s ease-out forwards;
         }
         .sub-link:hover {
-            background-color: rgba(96, 165, 250, 0.15);
-            color: #dbeafe; /* Lighter: blue-200 */
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #1e3a8a; /* blue-900 */
             transform: translateX(5px);
         }
 
-        /* Decorative animated data visualization elements */
-        .data-viz { height: 20px; display: flex; align-items: flex-end; gap: 2px; }
-        .data-viz .bar { width: 4px; background-color: #60a5fa; animation: bar-dance 1.5s infinite ease-in-out; }
-        @keyframes bar-dance {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
+        /* --- Main Icon Animations --- */
+        @keyframes rotate-refresh { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse-chart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes wobble-tool { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+        @keyframes shake-alert { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+
+        .animate-refresh { animation: rotate-refresh 5s linear infinite; }
+        .animate-chart { animation: pulse-chart 2s ease-in-out infinite; }
+        .animate-tool { animation: wobble-tool 2.5s ease-in-out infinite; }
+        .animate-alert { animation: shake-alert 1.5s ease-in-out infinite; }
+        
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 lg:p-8 main-background text-slate-300">
+<body class="main-background text-slate-800">
     
     <canvas id="particle-canvas"></canvas>
 
     <!-- Main container -->
-    <div class="w-full max-w-6xl mx-auto">
+    <div class="w-full max-w-6xl mx-auto px-4 lg:px-8 py-16 lg:py-24">
         
         <!-- Header -->
         <header class="mb-12 text-center animated-content" style="animation-delay: 0s;">
              <img 
                 src="https://www.questionpro.com/qp_userimages/sub-3/4349734/Xcite-Logo_English-Blue.jpg" 
                 alt="Xcite Logo" 
-                class="mx-auto h-16 md:h-20 w-auto mb-4 bg-white/90 p-2 rounded-xl shadow-lg"
+                class="mx-auto h-16 md:h-20 w-auto mb-4"
                 onerror="this.onerror=null; this.src='https://placehold.co/250x80/003366/FFFFFF?text=Xcite';"
             >
-            <h1 class="text-3xl md:text-4xl font-bold text-white">Business Intelligence Command Center</h1>
-            <p id="last-updated" class="text-slate-400 mt-2 text-sm"></p>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Business Intelligence Command Center</h1>
+            <p id="last-updated" class="text-slate-500 mt-2 text-sm"></p>
         </header>
 
         <!-- Symmetrical 2x2 Dashboard Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             <!-- Card 1: Overall NPS -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-8 rounded-2xl shadow-2xl" style="animation-delay: 0.2s;">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Overall NPS</h2>
-                        <p class="text-slate-400 mt-1">Main Net Promoter Score</p>
-                    </div>
-                    <div class="bg-[#003366]/70 text-blue-300 rounded-lg p-3"><i data-feather="bar-chart-2" class="w-6 h-6"></i></div>
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-6 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.2s;">
+                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
+                    <i data-feather="bar-chart-2" class="w-6 h-6 animate-chart"></i>
                 </div>
-                <div class="data-viz mt-8">
-                    <div class="bar" style="animation-delay: 0.1s;"></div><div class="bar" style="animation-delay: 0.2s;"></div><div class="bar" style="animation-delay: 0.3s;"></div><div class="bar" style="animation-delay: 0.4s;"></div><div class="bar" style="animation-delay: 0.5s;"></div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Overall NPS</h2>
+                    <p class="text-slate-600 text-sm">Main Net Promoter Score</p>
                 </div>
             </a>
 
             <!-- Card 2: Service Centre Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-2xl flex flex-col" style="animation-delay: 0.3s;">
+            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.3s;">
                 <div class="flex items-center space-x-4 mb-5">
-                    <div class="flex-shrink-0 bg-[#003366]/70 text-blue-300 rounded-lg p-3"><i data-feather="tool" class="w-6 h-6"></i></div>
+                    <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
+                        <i data-feather="tool" class="w-6 h-6 animate-tool"></i>
+                    </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">Service Centre</h2>
-                        <p class="text-slate-400 text-sm">Detailed analysis & insights</p>
+                        <h2 class="text-xl font-bold text-slate-900">Service Centre</h2>
+                        <p class="text-slate-600 text-sm">Detailed analysis & insights</p>
                     </div>
                 </div>
                 <div class="flex-grow space-y-3 flex flex-col">
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="activity" class="w-4 h-4 text-blue-400"></i><span>Service Centre NPS</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="pie-chart" class="w-4 h-4 text-blue-400"></i><span>Service Centre Insights</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="tag" class="w-4 h-4 text-blue-400"></i><span>Brand Analysis</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="file-text" class="w-4 h-4 text-blue-400"></i><span>MC1 Analysis</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="file-text" class="w-4 h-4 text-blue-400"></i><span>MC2 Analysis</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.5s;"><i data-feather="activity" class="w-4 h-4 text-blue-600"></i><span>Service Centre NPS</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.6s;"><i data-feather="pie-chart" class="w-4 h-4 text-blue-600"></i><span>Service Centre Insights</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="tag" class="w-4 h-4 text-blue-600"></i><span>Brand Analysis</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.8s;"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC1 Analysis</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.9s;"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC2 Analysis</span></a>
                 </div>
             </div>
 
             <!-- Card 3: Cancelled Jobs Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-2xl flex flex-col" style="animation-delay: 0.4s;">
-                 <div class="flex justify-between items-start mb-5">
+            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.4s;">
+                 <div class="flex items-center space-x-4 mb-5">
+                    <div class="flex-shrink-0 bg-red-500/10 text-red-500 rounded-lg p-3">
+                        <i data-feather="x-circle" class="w-6 h-6 animate-alert"></i>
+                    </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">Cancelled Job Insights</h2>
-                        <p class="text-slate-400 mt-1 text-sm">Analysis of cancelled jobs</p>
+                        <h2 class="text-xl font-bold text-slate-900">Cancelled Jobs</h2>
+                        <p class="text-slate-600 text-sm">Analysis of cancelled jobs</p>
                     </div>
-                    <div class="bg-[#003366]/70 text-blue-300 rounded-lg p-3"><i data-feather="x-circle" class="w-6 h-6"></i></div>
                 </div>
-                <div class="flex-grow flex flex-col justify-end">
-                    <div class="data-viz mt-8">
-                        <div class="bar" style="animation-delay: 0.6s; background-color: #f87171;"></div><div class="bar" style="animation-delay: 0.2s; background-color: #f87171;"></div><div class="bar" style="animation-delay: 0.4s; background-color: #f87171;"></div><div class="bar" style="animation-delay: 0.1s; background-color: #f87171;"></div>
-                    </div>
+                <div class="flex-grow space-y-3 flex flex-col">
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.6s;"><i data-feather="trending-down" class="w-4 h-4 text-red-600"></i><span>Cancellation Insights</span></a>
+                    <a href="#" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="search" class="w-4 h-4 text-red-600"></i><span>Reason Analysis</span></a>
                 </div>
             </div>
 
             <!-- Card 4: Replacement Jobs Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-2xl flex flex-col" style="animation-delay: 0.5s;">
-                <div class="flex justify-between items-start mb-5">
+            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.5s;">
+                <div class="flex items-center space-x-4 mb-5">
+                    <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
+                        <i data-feather="refresh-cw" class="w-6 h-6 animate-refresh"></i>
+                    </div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">Replacement Jobs</h2>
-                        <p class="text-slate-400 mt-1 text-sm">Data on product replacements</p>
+                        <h2 class="text-xl font-bold text-slate-900">Replacement Jobs</h2>
+                        <p class="text-slate-600 text-sm">Data on product replacements</p>
                     </div>
-                    <div class="bg-[#003366]/70 text-blue-300 rounded-lg p-3"><i data-feather="refresh-cw" class="w-6 h-6"></i></div>
                 </div>
-                <div class="flex-grow flex flex-col justify-end">
-                    <div class="data-viz mt-8">
-                        <div class="bar" style="animation-delay: 0.3s; background-color: #4ade80;"></div><div class="bar" style="animation-delay: 0.5s; background-color: #4ade80;"></div><div class="bar" style="animation-delay: 0.1s; background-color: #4ade80;"></div><div class="bar" style="animation-delay: 0.6s; background-color: #4ade80;"></div><div class="bar" style="animation-delay: 0.2s; background-color: #4ade80;"></div>
-                    </div>
+                <div class="flex-grow space-y-3 flex flex-col">
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="trending-up" class="w-4 h-4 text-green-600"></i><span>Replacement Insights</span></a>
+                    <a href="#" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.8s;"><i data-feather="package" class="w-4 h-4 text-green-600"></i><span>Product Analysis</span></a>
                 </div>
             </div>
         </div>
@@ -175,7 +182,7 @@
         if (dateElement) {
             const today = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            dateElement.textContent = `Data current as of ${today.toLocaleDateString('en-US', options)}`;
+            dateElement.textContent = `Data current as of ${today.toLocaleString('en-US', options)}`;
         }
 
         // --- Interactive 3D Tilt Effect ---
@@ -185,13 +192,10 @@
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-
-                const rotateX = -y / 25; // Reduced intensity
+                const rotateX = -y / 25;
                 const rotateY = x / 25;
-
                 card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
-
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1500px) rotateX(0) rotateY(0)';
             });
@@ -205,7 +209,7 @@
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            initParticles(); // Re-initialize on resize for better density
+            initParticles();
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -237,7 +241,7 @@
                 let y = Math.random() * canvas.height;
                 let speedX = (Math.random() * 0.3) - 0.15;
                 let speedY = (Math.random() * 0.3) - 0.15;
-                let color = 'rgba(96, 165, 250, 0.5)'; // Lighter blue
+                let color = 'rgba(0, 51, 102, 0.4)'; // Dark blue for light theme
                 particles.push(new Particle(x, y, size, speedX, speedY, color));
             }
         }
@@ -252,7 +256,7 @@
                     );
                     if (distance < 120) {
                         opacityValue = 1 - (distance / 120);
-                        ctx.strokeStyle = `rgba(96, 165, 250, ${opacityValue * 0.5})`;
+                        ctx.strokeStyle = `rgba(0, 51, 102, ${opacityValue * 0.3})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
