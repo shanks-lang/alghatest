@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xcite BI Dashboard Menu</title>
+    <title>Xcite BI Command Center</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -16,119 +16,260 @@
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent scrollbars from canvas */
         }
 
-        /* New Background: A clean, geometric pattern with a clear gradient */
-        .main-background {
-            background-color: #f1f5f9; /* Fallback color */
-            background-image: 
-                linear-gradient(to bottom, #f8fafc, #eef2f7),
-                /* A subtle plus-sign pattern using SVG */
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23dbeafe' fill-opacity='0.6'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        /* Interactive Particle Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #020617; /* slate-950 */
+            background-image: radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 30%),
+                              radial-gradient(circle at bottom right, rgba(0, 51, 102, 0.15), transparent 40%);
         }
 
-        /* Keyframe animation for cards appearing */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Keyframe animation for content appearing */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .animated-card {
+        .animated-content {
             opacity: 0;
-            animation: fadeInUp 0.5s ease-out forwards;
+            animation: fadeIn 0.8s ease-out forwards;
         }
 
-        /* Card hover effect */
+        /* Card styles with 3D tilt effect */
         .card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background-color: rgba(15, 23, 42, 0.6); /* slate-900 */
+            border: 1px solid #1e293b; /* slate-800 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Sub-link styles */
+        .sub-link {
+            background-color: rgba(30, 41, 59, 0.6); /* slate-800 */
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .sub-link:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #93c5fd; /* blue-300 */
+            transform: translateX(5px);
+        }
+
+        /* Decorative animated data visualization elements */
+        .data-viz { height: 20px; display: flex; align-items: flex-end; gap: 2px; }
+        .data-viz .bar { width: 4px; background-color: #3b82f6; animation: bar-dance 1.5s infinite ease-in-out; }
+        @keyframes bar-dance {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 lg:p-8 main-background">
+<body class="min-h-screen flex items-center justify-center p-4 lg:p-8 main-background text-slate-300">
     
+    <canvas id="particle-canvas"></canvas>
+
     <!-- Main container -->
     <div class="w-full max-w-6xl mx-auto">
         
         <!-- Header -->
-        <header class="mb-12 text-center animated-card" style="animation-delay: 0s;">
-            <img 
+        <header class="mb-12 text-center animated-content" style="animation-delay: 0s;">
+             <img 
                 src="https://www.questionpro.com/qp_userimages/sub-3/4349734/Xcite-Logo_English-Blue.jpg" 
                 alt="Xcite Logo" 
-                class="mx-auto h-16 md:h-20 w-auto mb-4"
+                class="mx-auto h-16 md:h-20 w-auto mb-4 bg-white/90 p-2 rounded-xl shadow-lg"
                 onerror="this.onerror=null; this.src='https://placehold.co/250x80/003366/FFFFFF?text=Xcite';"
             >
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Business Intelligence Portal</h1>
-            <p class="text-slate-500 mt-2">Select a dashboard to view insights.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">Business Intelligence Command Center</h1>
+            <p id="last-updated" class="text-slate-400 mt-2 text-sm"></p>
         </header>
 
-        <!-- Navigation Menu Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Symmetrical 2x2 Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             <!-- Card 1: Overall NPS -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.1s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="bar-chart-2" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Overall NPS</h2></div>
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-8 rounded-2xl shadow-2xl" style="animation-delay: 0.2s;">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Overall NPS</h2>
+                        <p class="text-slate-400 mt-1">Main Net Promoter Score</p>
+                    </div>
+                    <div class="bg-[#003366]/50 text-blue-300 rounded-lg p-3"><i data-feather="bar-chart-2" class="w-6 h-6"></i></div>
+                </div>
+                <div class="data-viz mt-8">
+                    <div class="bar" style="animation-delay: 0.1s;"></div><div class="bar" style="animation-delay: 0.2s;"></div><div class="bar" style="animation-delay: 0.3s;"></div><div class="bar" style="animation-delay: 0.4s;"></div><div class="bar" style="animation-delay: 0.5s;"></div>
+                </div>
             </a>
 
-            <!-- Card 2: Service Centre NPS -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.2s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="activity" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Service Centre NPS</h2></div>
+            <!-- Card 2: Service Centre Group -->
+            <div class="card animated-content p-6 rounded-2xl shadow-2xl flex flex-col" style="animation-delay: 0.3s;">
+                <div class="flex items-center space-x-4 mb-5">
+                    <div class="flex-shrink-0 bg-[#003366]/50 text-blue-300 rounded-lg p-3"><i data-feather="tool" class="w-6 h-6"></i></div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Service Centre</h2>
+                        <p class="text-slate-400 text-sm">Detailed analysis & insights</p>
+                    </div>
+                </div>
+                <div class="flex-grow space-y-3 flex flex-col">
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="activity" class="w-4 h-4 text-blue-400"></i><span>Service Centre NPS</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="pie-chart" class="w-4 h-4 text-blue-400"></i><span>Service Centre Insights</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="tag" class="w-4 h-4 text-blue-400"></i><span>Brand Analysis</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="file-text" class="w-4 h-4 text-blue-400"></i><span>MC1 Analysis</span></a>
+                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium"><i data-feather="file-text" class="w-4 h-4 text-blue-400"></i><span>MC2 Analysis</span></a>
+                </div>
+            </div>
+
+            <!-- Card 3: Cancelled Jobs -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-content p-8 rounded-2xl shadow-2xl" style="animation-delay: 0.4s;">
+                 <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Cancelled Job Insights</h2>
+                        <p class="text-slate-400 mt-1">Analysis of cancelled jobs</p>
+                    </div>
+                    <div class="bg-[#003366]/50 text-blue-300 rounded-lg p-3"><i data-feather="x-circle" class="w-6 h-6"></i></div>
+                </div>
+                 <div class="data-viz mt-8">
+                    <div class="bar" style="animation-delay: 0.6s; background-color: #ef4444;"></div><div class="bar" style="animation-delay: 0.2s; background-color: #ef4444;"></div><div class="bar" style="animation-delay: 0.4s; background-color: #ef4444;"></div>
+                </div>
             </a>
 
-            <!-- Card 3: Service Centre Insights -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.3s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="pie-chart" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Service Centre Insights</h2></div>
-            </a>
-
-            <!-- Card 4: Brand Analysis -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.4s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="tag" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Brand Analysis</h2></div>
-            </a>
-            
-            <!-- Card 5: MC1 Analysis -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.5s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="file-text" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">MC1 Analysis</h2></div>
-            </a>
-
-            <!-- Card 6: MC2 Analysis -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.6s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="file-text" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">MC2 Analysis</h2></div>
-            </a>
-
-            <!-- Card 7: Cancelled Job Insights -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.7s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="x-circle" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Cancelled Job Insights</h2></div>
-            </a>
-
-            <!-- Card 8: Replacement Jobs -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-card bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg flex items-center space-x-4" style="animation-delay: 0.8s;">
-                <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-xl p-3"><i data-feather="refresh-cw" class="w-6 h-6"></i></div>
-                <div><h2 class="font-semibold text-slate-900">Replacement Jobs</h2></div>
+            <!-- Card 4: Replacement Jobs -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-content p-8 rounded-2xl shadow-2xl" style="animation-delay: 0.5s;">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Replacement Jobs</h2>
+                        <p class="text-slate-400 mt-1">Data on product replacements</p>
+                    </div>
+                    <div class="bg-[#003366]/50 text-blue-300 rounded-lg p-3"><i data-feather="refresh-cw" class="w-6 h-6"></i></div>
+                </div>
+                 <div class="data-viz mt-8">
+                    <div class="bar" style="animation-delay: 0.3s; background-color: #22c55e;"></div><div class="bar" style="animation-delay: 0.5s; background-color: #22c55e;"></div><div class="bar" style="animation-delay: 0.1s; background-color: #22c55e;"></div><div class="bar" style="animation-delay: 0.6s; background-color: #22c55e;"></div>
+                </div>
             </a>
         </div>
-
     </div>
 
     <script>
         // Initialize Feather Icons
         feather.replace();
+
+        // --- Dynamic Date Timestamp ---
+        const dateElement = document.getElementById('last-updated');
+        if (dateElement) {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = `Data current as of ${today.toLocaleDateString('en-US', options)}`;
+        }
+
+        // --- Interactive 3D Tilt Effect ---
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                const rotateX = -y / 20;
+                const rotateY = x / 20;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // --- Animated Particle Background ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor(x, y, size, speedX, speedY, color) {
+                this.x = x; this.y = y; this.size = size;
+                this.speedX = speedX; this.speedY = speedY; this.color = color;
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+                this.x += this.speedX; this.y += this.speedY;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = Math.random() * 1.5 + 0.5;
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * canvas.height;
+                let speedX = (Math.random() * 0.4) - 0.2;
+                let speedY = (Math.random() * 0.4) - 0.2;
+                let color = 'rgba(59, 130, 246, 0.5)';
+                particles.push(new Particle(x, y, size, speedX, speedY, color));
+            }
+        }
+
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = Math.sqrt(
+                        Math.pow(particles[a].x - particles[b].x, 2) +
+                        Math.pow(particles[a].y - particles[b].y, 2)
+                    );
+                    if (distance < 100) {
+                        opacityValue = 1 - (distance / 100);
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
     </script>
 </body>
 </html>
