@@ -53,7 +53,7 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             transform-style: preserve-3d;
             will-change: transform;
-            overflow: hidden; /* Hide the gradient border when not hovered */
+            /* overflow: hidden;  <-- REMOVED THIS LINE TO FIX COLLAPSIBLE MENU */
         }
         
         /* Animated Gradient Border */
@@ -99,7 +99,7 @@
         .animate-tool { animation: wobble-tool 2.5s ease-in-out infinite; }
         .animate-alert { animation: shake-alert 1.5s ease-in-out infinite; }
         
-        /* --- NEW: Collapsible Menu Styles --- */
+        /* --- Collapsible Menu Styles --- */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
         .chevron-icon { transition: transform 0.3s ease-in-out; }
@@ -110,7 +110,7 @@
             transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), padding-top 0.5s ease;
         }
         details[open] .submenu {
-            max-height: 300px; /* Adjust as needed */
+            max-height: 500px; /* FIXED: Increased height to ensure all items are visible */
             padding-top: 1rem;
         }
 
