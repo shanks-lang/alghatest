@@ -45,25 +45,42 @@
 
         /* Card styles with 3D tilt effect - Light Theme */
         .card {
-            background-color: rgba(255, 255, 255, 0.6); 
+            position: relative; /* Needed for the gradient border */
+            background-color: rgba(255, 255, 255, 0.7); 
             border: 1px solid #e2e8f0; /* slate-200 */
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             transform-style: preserve-3d;
             will-change: transform;
+            overflow: hidden; /* Hide the gradient border when not hovered */
         }
+        
+        /* Animated Gradient Border */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: -1;
+            margin: -2px; /* Border width */
+            border-radius: inherit; /* Follow card's border-radius */
+            background: conic-gradient(from 0deg, #818cf8, #60a5fa, #38bdf8, #60a5fa, #818cf8);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+        
         .card:hover {
-            border-color: rgba(59, 130, 246, 0.4); /* blue-500 */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
         
         /* Sub-link styles */
         .sub-link {
-            background-color: rgba(241, 245, 249, 0.7); /* slate-100 */
+            background-color: rgba(241, 245, 249, 0.8); /* slate-100 */
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-            opacity: 0; /* Start hidden for animation */
-            animation: fadeIn 0.5s ease-out forwards;
         }
         .sub-link:hover {
             background-color: rgba(59, 130, 246, 0.1);
@@ -82,6 +99,21 @@
         .animate-tool { animation: wobble-tool 2.5s ease-in-out infinite; }
         .animate-alert { animation: shake-alert 1.5s ease-in-out infinite; }
         
+        /* --- NEW: Collapsible Menu Styles --- */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        .chevron-icon { transition: transform 0.3s ease-in-out; }
+        details[open] .chevron-icon { transform: rotate(180deg); }
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), padding-top 0.5s ease;
+        }
+        details[open] .submenu {
+            max-height: 300px; /* Adjust as needed */
+            padding-top: 1rem;
+        }
+
     </style>
 </head>
 <body class="main-background text-slate-800">
@@ -89,7 +121,7 @@
     <canvas id="particle-canvas"></canvas>
 
     <!-- Main container -->
-    <div class="w-full max-w-6xl mx-auto px-4 lg:px-8 py-16 lg:py-24">
+    <div class="w-full max-w-7xl mx-auto px-4 lg:px-8 py-16 lg:py-24">
         
         <!-- Header -->
         <header class="mb-12 text-center animated-content" style="animation-delay: 0s;">
@@ -103,11 +135,11 @@
             <p id="last-updated" class="text-slate-500 mt-2 text-sm"></p>
         </header>
 
-        <!-- Symmetrical 2x2 Dashboard Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Dynamic Dashboard Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <!-- Card 1: Overall NPS -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-6 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.2s;">
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.2s;">
                 <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
                     <i data-feather="bar-chart-2" class="w-6 h-6 animate-chart"></i>
                 </div>
@@ -117,59 +149,61 @@
                 </div>
             </a>
 
-            <!-- Card 2: Service Centre Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.3s;">
-                <div class="flex items-center space-x-4 mb-5">
+            <!-- Card 2: Service Centre Group (Collapsible) -->
+            <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.3s;">
+                <summary class="flex items-center space-x-4 cursor-pointer">
                     <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
                         <i data-feather="tool" class="w-6 h-6 animate-tool"></i>
                     </div>
-                    <div>
+                    <div class="flex-grow">
                         <h2 class="text-xl font-bold text-slate-900">Service Centre</h2>
                         <p class="text-slate-600 text-sm">Detailed analysis & insights</p>
                     </div>
+                    <i data-feather="chevron-down" class="w-5 h-5 text-slate-500 chevron-icon"></i>
+                </summary>
+                <div class="submenu">
+                    <div class="border-t border-slate-200 mt-4 pt-4 space-y-2 flex flex-col">
+                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="activity" class="w-4 h-4 text-blue-600"></i><span>Service Centre NPS</span></a>
+                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="pie-chart" class="w-4 h-4 text-blue-600"></i><span>Service Centre Insights</span></a>
+                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="tag" class="w-4 h-4 text-blue-600"></i><span>Brand Analysis</span></a>
+                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC1 Analysis</span></a>
+                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC2 Analysis</span></a>
+                    </div>
                 </div>
-                <div class="flex-grow space-y-3 flex flex-col">
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.5s;"><i data-feather="activity" class="w-4 h-4 text-blue-600"></i><span>Service Centre NPS</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.6s;"><i data-feather="pie-chart" class="w-4 h-4 text-blue-600"></i><span>Service Centre Insights</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="tag" class="w-4 h-4 text-blue-600"></i><span>Brand Analysis</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.8s;"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC1 Analysis</span></a>
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.9s;"><i data-feather="file-text" class="w-4 h-4 text-blue-600"></i><span>MC2 Analysis</span></a>
-                </div>
-            </div>
+            </details>
 
-            <!-- Card 3: Cancelled Jobs Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.4s;">
-                 <div class="flex items-center space-x-4 mb-5">
-                    <div class="flex-shrink-0 bg-red-500/10 text-red-500 rounded-lg p-3">
-                        <i data-feather="x-circle" class="w-6 h-6 animate-alert"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Cancelled Jobs</h2>
-                        <p class="text-slate-600 text-sm">Analysis of cancelled jobs</p>
-                    </div>
+            <!-- Card 3: Technician Review -->
+            <a href="https://bi.questionpro.com/sd/387d83b3-5984-417f-993d-aaeaa608f20e" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.4s;">
+                <div class="flex-shrink-0 bg-purple-500/10 text-purple-500 rounded-lg p-3">
+                    <i data-feather="user-check" class="w-6 h-6 animate-chart"></i>
                 </div>
-                <div class="flex-grow space-y-3 flex flex-col">
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.6s;"><i data-feather="trending-down" class="w-4 h-4 text-red-600"></i><span>Cancellation Insights</span></a>
-                    <a href="#" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="search" class="w-4 h-4 text-red-600"></i><span>Reason Analysis</span></a>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Technician Review</h2>
+                    <p class="text-slate-600 text-sm">Performance and feedback</p>
                 </div>
-            </div>
+            </a>
 
-            <!-- Card 4: Replacement Jobs Group -->
-            <div class="card animated-content p-6 rounded-2xl shadow-xl flex flex-col" style="animation-delay: 0.5s;">
-                <div class="flex items-center space-x-4 mb-5">
-                    <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
-                        <i data-feather="refresh-cw" class="w-6 h-6 animate-refresh"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Replacement Jobs</h2>
-                        <p class="text-slate-600 text-sm">Data on product replacements</p>
-                    </div>
+            <!-- Card 4: Cancelled Jobs Group -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.5s;">
+                 <div class="flex-shrink-0 bg-red-500/10 text-red-500 rounded-lg p-3">
+                    <i data-feather="x-circle" class="w-6 h-6 animate-alert"></i>
                 </div>
-                <div class="flex-grow space-y-3 flex flex-col">
-                    <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.7s;"><i data-feather="trending-up" class="w-4 h-4 text-green-600"></i><span>Replacement Insights</span></a>
-                    <a href="#" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700" style="animation-delay: 0.8s;"><i data-feather="package" class="w-4 h-4 text-green-600"></i><span>Product Analysis</span></a>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Cancelled Jobs</h2>
+                    <p class="text-slate-600 text-sm">Analysis of cancelled jobs</p>
                 </div>
-            </div>
+            </a>
+
+            <!-- Card 5: Replacement Jobs Group -->
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.6s;">
+                <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
+                    <i data-feather="refresh-cw" class="w-6 h-6 animate-refresh"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Replacement Jobs</h2>
+                    <p class="text-slate-600 text-sm">Data on product replacements</p>
+                </div>
+            </a>
         </div>
     </div>
 
