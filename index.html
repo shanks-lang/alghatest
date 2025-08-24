@@ -53,6 +53,8 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             transform-style: preserve-3d;
             will-change: transform;
+            display: flex; /* Added for consistent layout */
+            flex-direction: column; /* Added for consistent layout */
         }
         
         /* Animated Gradient Border */
@@ -71,30 +73,9 @@
         .card:hover::before { opacity: 1; }
         .card:hover { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
         
-        /* Sub-link styles */
-        .sub-link {
-            background-color: rgba(241, 245, 249, 0.8);
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-        }
-        .sub-link:hover {
-            background-color: rgba(59, 130, 246, 0.1);
-            color: #1e3a8a;
-            transform: translateX(5px);
-        }
-
-        /* --- Main Icon Animations --- */
-        @keyframes rotate-refresh { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-chart { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        @keyframes wobble-tool { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
-        @keyframes bounce-clipboard { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-8px);} 60% {transform: translateY(-4px);} }
-
-        .animate-refresh { animation: rotate-refresh 5s linear infinite; }
-        .animate-chart { animation: pulse-chart 2.5s ease-in-out infinite; }
-        .animate-tool { animation: wobble-tool 2.5s ease-in-out infinite; }
-        .animate-clipboard { animation: bounce-clipboard 2s ease-in-out infinite; }
-        
-        /* --- Collapsible Menu Styles --- */
-        details > summary { list-style: none; }
+        /* --- Collapsible Menu Styles for KPI Card --- */
+        details { flex-grow: 1; display: flex; flex-direction: column; }
+        details > summary { list-style: none; display: flex; width: 100%; }
         details > summary::-webkit-details-marker { display: none; }
         .chevron-icon { transition: transform 0.3s ease-in-out; }
         details[open] .chevron-icon { transform: rotate(180deg); }
@@ -138,11 +119,11 @@
             <p id="last-updated" class="text-slate-500 mt-2 text-sm"></p>
         </header>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.2s;">
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.1s;">
                 <div class="flex-shrink-0 bg-blue-500/10 text-blue-500 rounded-lg p-3">
-                    <i data-feather="bar-chart-2" class="w-6 h-6 animate-chart"></i>
+                    <i data-feather="bar-chart-2" class="w-6 h-6"></i>
                 </div>
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">Overall Service Centre</h2>
@@ -150,43 +131,80 @@
                 </div>
             </a>
 
-            <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.3s;">
-                <summary class="flex items-center space-x-4 cursor-pointer">
-                    <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
-                        <i data-feather="tool" class="w-6 h-6 animate-tool"></i>
-                    </div>
-                    <div class="flex-grow">
-                        <h2 class="text-xl font-bold text-slate-900">Service Centre Insights</h2>
-                        <p class="text-slate-600 text-sm">Detailed analysis & reports</p>
-                    </div>
-                    <i data-feather="chevron-down" class="w-5 h-5 text-slate-500 chevron-icon"></i>
-                </summary>
-                <div class="submenu">
-                    <div class="border-t border-slate-200 mt-4 pt-4 space-y-2 flex flex-col">
-                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=3" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="check-square" class="w-4 h-4 text-green-600"></i><span>Repaired Job insights</span></a>
-                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="x-circle" class="w-4 h-4 text-red-600"></i><span>Cancelled Job Insights</span></a>
-                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="refresh-cw" class="w-4 h-4 text-yellow-600"></i><span>Replacements Insights</span></a>
-                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="layers" class="w-4 h-4 text-cyan-600"></i><span>Category Overview (MC1)</span></a>
-                        <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="git-merge" class="w-4 h-4 text-purple-600"></i><span>Category + Sub Category</span></a>
-                         <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="tag" class="w-4 h-4 text-orange-600"></i><span>Brand Within Category</span></a>
-                    </div>
-                </div>
-            </details>
-
-            <a href="https://bi.questionpro.com/sd/387d83b3-5984-417f-993d-aaeaa608f20e" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.4s;">
-                <div class="flex-shrink-0 bg-purple-500/10 text-purple-500 rounded-lg p-3">
-                    <i data-feather="user-check" class="w-6 h-6 animate-chart"></i>
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=3" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.2s;">
+                <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
+                    <i data-feather="check-square" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-slate-900">Technician Review</h2>
-                    <p class="text-slate-600 text-sm">Individual performance and feedback</p>
+                    <h2 class="text-xl font-bold text-slate-900">Repaired Job Insights</h2>
+                    <p class="text-slate-600 text-sm">Analysis of repaired jobs</p>
+                </div>
+            </a>
+
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=4" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.3s;">
+                <div class="flex-shrink-0 bg-red-500/10 text-red-500 rounded-lg p-3">
+                    <i data-feather="x-circle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Cancelled Job Insights</h2>
+                    <p class="text-slate-600 text-sm">Reasons for cancellation</p>
+                </div>
+            </a>
+
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=5" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.4s;">
+                <div class="flex-shrink-0 bg-yellow-500/10 text-yellow-500 rounded-lg p-3">
+                    <i data-feather="refresh-cw" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Replacements Insights</h2>
+                    <p class="text-slate-600 text-sm">Data on product replacements</p>
+                </div>
+            </a>
+
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=6" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.5s;">
+                <div class="flex-shrink-0 bg-cyan-500/10 text-cyan-500 rounded-lg p-3">
+                    <i data-feather="layers" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Category Overview (MC1)</h2>
+                    <p class="text-slate-600 text-sm">Main category analysis</p>
+                </div>
+            </a>
+
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=7" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.6s;">
+                <div class="flex-shrink-0 bg-purple-500/10 text-purple-500 rounded-lg p-3">
+                    <i data-feather="git-merge" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Category + Sub Category</h2>
+                    <p class="text-slate-600 text-sm">Drilldown into MC1+MC2</p>
                 </div>
             </a>
             
-            <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.5s;">
-                <summary class="flex items-center space-x-4 cursor-pointer">
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.7s;">
+                <div class="flex-shrink-0 bg-orange-500/10 text-orange-500 rounded-lg p-3">
+                    <i data-feather="tag" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Brand Within Category</h2>
+                    <p class="text-slate-600 text-sm">Analysis of Brand+MC1</p>
+                </div>
+            </a>
+
+            <a href="https://bi.questionpro.com/sd/387d83b3-5984-417f-993d-aaeaa608f20e" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl space-x-4" style="animation-delay: 0.8s;">
+                <div class="flex-shrink-0 bg-pink-500/10 text-pink-500 rounded-lg p-3">
+                    <i data-feather="user-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Technician Review</h2>
+                    <p class="text-slate-600 text-sm">Individual performance</p>
+                </div>
+            </a>
+            
+            <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.9s;">
+                <summary class="flex items-center space-x-4 cursor-pointer w-full">
                     <div class="flex-shrink-0 bg-indigo-500/10 text-indigo-500 rounded-lg p-3">
-                        <i data-feather="clipboard" class="w-6 h-6 animate-clipboard"></i>
+                        <i data-feather="clipboard" class="w-6 h-6"></i>
                     </div>
                     <div class="flex-grow">
                         <h2 class="text-xl font-bold text-slate-900">Technician KPI</h2>
@@ -195,8 +213,8 @@
                     <i data-feather="chevron-down" class="w-5 h-5 text-slate-500 chevron-icon"></i>
                 </summary>
                 <div class="submenu">
-                    <div class="border-t border-slate-200 mt-4 pt-4 space-y-2 flex flex-col">
-                         <a href="#" id="load-kpi-report" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="eye" class="w-4 h-4 text-indigo-600"></i><span>View KPI Dashboard</span></a>
+                    <div class="border-t border-slate-200 mt-4 pt-4">
+                         <a href="#" id="load-kpi-report" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700 w-full"><i data-feather="eye" class="w-4 h-4 text-indigo-600"></i><span>View KPI Dashboard</span></a>
                     </div>
                 </div>
             </details>
@@ -234,7 +252,7 @@
             iframe.title = "Technician KPI Report";
             iframe.width = "100%";
             iframe.height = "600"; 
-            iframe.src = "https://app.powerbi.com/reportEmbed?reportId=4767bf6d-e672-4b9d-8fee-6955c39517de&autoAuth=true&ctid=cc83180a-3480-487b-94de-3d957d2c23cd"; // YOUR IFRAME SRC
+            iframe.src = "https://app.powerbi.com/reportEmbed?reportId=4767bf6d-e672-4b9d-8fee-6955c39517de&autoAuth=true&ctid=cc83180a-3480-487b-94de-3d957d2c23cd";
             iframe.frameBorder = "0";
             iframe.allowFullScreen = true;
 
