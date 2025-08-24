@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xcite BI Command Center</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Feather Icons for UI icons -->
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden; /* Prevent horizontal scroll, allow vertical */
+        }
+        html {
+            scroll-behavior: smooth;
         }
 
         /* Interactive Particle Background - Light Theme */
@@ -53,7 +53,6 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             transform-style: preserve-3d;
             will-change: transform;
-            /* overflow: hidden;  <-- REMOVED THIS LINE TO FIX COLLAPSIBLE MENU */
         }
         
         /* Animated Gradient Border */
@@ -110,8 +109,21 @@
             transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), padding-top 0.5s ease;
         }
         details[open] .submenu {
-            max-height: 500px; /* FIXED: Increased height to ensure all items are visible */
+            max-height: 500px; /* Increased height */
             padding-top: 1rem;
+        }
+
+        /* --- Report Container Style --- */
+        #report-container {
+            transition: opacity 0.5s ease-in-out, max-height 0.8s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        #report-container.visible {
+            max-height: 1000px; /* Adjust as needed */
+            opacity: 1;
         }
 
     </style>
@@ -120,10 +132,8 @@
     
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Main container -->
     <div class="w-full max-w-7xl mx-auto px-4 lg:px-8 py-16 lg:py-24">
         
-        <!-- Header -->
         <header class="mb-12 text-center animated-content" style="animation-delay: 0s;">
              <img 
                 src="https://www.questionpro.com/qp_userimages/sub-3/4349734/Xcite-Logo_English-Blue.jpg" 
@@ -135,10 +145,8 @@
             <p id="last-updated" class="text-slate-500 mt-2 text-sm"></p>
         </header>
 
-        <!-- Dynamic Dashboard Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- Card 1: Overall NPS -->
             <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=2" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.2s;">
                 <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
                     <i data-feather="bar-chart-2" class="w-6 h-6 animate-chart"></i>
@@ -149,7 +157,6 @@
                 </div>
             </a>
 
-            <!-- Card 2: Service Centre Group (Collapsible) -->
             <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.3s;">
                 <summary class="flex items-center space-x-4 cursor-pointer">
                     <div class="flex-shrink-0 bg-[#003366]/10 text-[#003366] rounded-lg p-3">
@@ -172,7 +179,6 @@
                 </div>
             </details>
 
-            <!-- Card 3: Technician Review -->
             <a href="https://bi.questionpro.com/sd/387d83b3-5984-417f-993d-aaeaa608f20e" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.4s;">
                 <div class="flex-shrink-0 bg-purple-500/10 text-purple-500 rounded-lg p-3">
                     <i data-feather="user-check" class="w-6 h-6 animate-chart"></i>
@@ -182,9 +188,26 @@
                     <p class="text-slate-600 text-sm">Performance and feedback</p>
                 </div>
             </a>
+            
+            <details class="card animated-content p-5 rounded-2xl shadow-xl" style="animation-delay: 0.5s;">
+                <summary class="flex items-center space-x-4 cursor-pointer">
+                    <div class="flex-shrink-0 bg-indigo-500/10 text-indigo-500 rounded-lg p-3">
+                        <i data-feather="clipboard" class="w-6 h-6 animate-chart"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h2 class="text-xl font-bold text-slate-900">Technician KPI</h2>
+                        <p class="text-slate-600 text-sm">Embedded performance report</p>
+                    </div>
+                    <i data-feather="chevron-down" class="w-5 h-5 text-slate-500 chevron-icon"></i>
+                </summary>
+                <div class="submenu">
+                    <div class="border-t border-slate-200 mt-4 pt-4 space-y-2 flex flex-col">
+                         <a href="#" id="load-kpi-report" class="sub-link p-3 rounded-lg flex items-center space-x-3 font-medium text-slate-700"><i data-feather="eye" class="w-4 h-4 text-indigo-600"></i><span>View KPI Dashboard</span></a>
+                    </div>
+                </div>
+            </details>
 
-            <!-- Card 4: Cancelled Jobs Group -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.5s;">
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=8" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.6s;">
                  <div class="flex-shrink-0 bg-red-500/10 text-red-500 rounded-lg p-3">
                     <i data-feather="x-circle" class="w-6 h-6 animate-alert"></i>
                 </div>
@@ -194,8 +217,7 @@
                 </div>
             </a>
 
-            <!-- Card 5: Replacement Jobs Group -->
-            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.6s;">
+            <a href="https://bi.questionpro.com/sd/e83c2e58-f505-48cd-8739-f9a93cfb5960?tab=9" target="_blank" class="card animated-content p-5 rounded-2xl shadow-xl flex items-center space-x-4" style="animation-delay: 0.7s;">
                 <div class="flex-shrink-0 bg-green-500/10 text-green-500 rounded-lg p-3">
                     <i data-feather="refresh-cw" class="w-6 h-6 animate-refresh"></i>
                 </div>
@@ -205,6 +227,12 @@
                 </div>
             </a>
         </div>
+        
+        <div id="report-container" class="mt-16 w-full animated-content">
+            <div id="iframe-target" class="bg-white p-2 rounded-2xl shadow-2xl border border-slate-200">
+                </div>
+        </div>
+
     </div>
 
     <script>
@@ -218,6 +246,36 @@
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             dateElement.textContent = `Data current as of ${today.toLocaleString('en-US', options)}`;
         }
+
+        // --- NEW SCRIPT for Power BI iframe loading ---
+        const loadKpiButton = document.getElementById('load-kpi-report');
+        const reportContainer = document.getElementById('report-container');
+        const iframeTarget = document.getElementById('iframe-target');
+
+        loadKpiButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the link from navigating
+
+            // Clear any previous report
+            iframeTarget.innerHTML = '';
+
+            // Create the iframe element
+            const iframe = document.createElement('iframe');
+            iframe.title = "test";
+            iframe.width = "100%"; // Make it responsive
+            iframe.height = "600"; // Adjust height as needed
+            iframe.src = "https://app.powerbi.com/reportEmbed?reportId=4767bf6d-e672-4b9d-8fee-6955c39517de&autoAuth=true&ctid=cc83180a-3480-487b-94de-3d957d2c23cd";
+            iframe.frameBorder = "0";
+            iframe.allowFullScreen = true;
+
+            // Add the iframe to the page
+            iframeTarget.appendChild(iframe);
+            
+            // Make the container visible
+            reportContainer.classList.add('visible');
+
+            // Scroll to the report
+            reportContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
 
         // --- Interactive 3D Tilt Effect ---
         const cards = document.querySelectorAll('.card');
