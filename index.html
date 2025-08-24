@@ -28,7 +28,6 @@
             height: 100%;
             z-index: -1;
             background-color: #f8fafc; /* slate-50 */
-            /* RESTORED: Subtle background gradient */
             background-image: radial-gradient(circle at top left, rgba(59, 130, 246, 0.05), transparent 30%),
                               radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.05), transparent 40%);
         }
@@ -55,29 +54,29 @@
             will-change: transform;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Softer default shadow */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
-        /* NEW: Elegant, always-on gradient border */
+        /* Elegant, always-on gradient border */
         .card::before {
             content: '';
             position: absolute;
             top: 0; right: 0; bottom: 0; left: 0;
             z-index: -1;
-            margin: -1px; /* Thinner border */
+            margin: -1px;
             border-radius: inherit;
             background: conic-gradient(from 0deg, #818cf8, #60a5fa, #38bdf8, #60a5fa, #818cf8);
-            opacity: 0.25; /* Always visible but subtle */
+            opacity: 0.25;
             transition: opacity 0.3s ease-in-out;
         }
 
-        .card:hover::before { opacity: 1; } /* Glow effect on hover */
+        .card:hover::before { opacity: 1; }
         .card:hover { 
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
-            transform: translateY(-5px); /* Lift effect on hover */
+            transform: translateY(-5px);
         }
         
-        /* --- Collapsible Menu Styles for KPI Card --- */
+        /* Collapsible Menu Styles */
         details { flex-grow: 1; display: flex; flex-direction: column; }
         details > summary { list-style: none; display: flex; width: 100%; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
@@ -93,7 +92,7 @@
             padding-top: 1rem;
         }
 
-        /* --- Report Container Style --- */
+        /* Report Container Style */
         #report-container {
             transition: opacity 0.5s ease-in-out, max-height 0.8s ease-in-out;
             max-height: 0;
@@ -240,10 +239,13 @@
             iframeTarget.innerHTML = '<div class="text-center p-8 text-slate-500">Loading Report...</div>'; 
 
             const iframe = document.createElement('iframe');
-            iframe.title = "Technician KPI Report";
-            iframe.width = "100%";
-            iframe.height = "600"; 
+            iframe.title = "test";
+            iframe.width = "100%"; // Changed from fixed width
+            iframe.height = "600"; // You can adjust this height
+            
+            // --- THIS IS THE LINE THAT HAS BEEN UPDATED ---
             iframe.src = "https://app.powerbi.com/reportEmbed?reportId=4767bf6d-e672-4b9d-8fee-6955c39517de&autoAuth=true&ctid=cc83180a-3480-487b-94de-3d957d2c23cd";
+            
             iframe.frameBorder = "0";
             iframe.allowFullScreen = true;
             
@@ -275,7 +277,6 @@
         });
 
         // --- Animated Particle Background ---
-        // (This script is long and unchanged, you can keep your existing one if preferred)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
